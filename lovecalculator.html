@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Calculator</title>
+    <style>
+         body {
+            background-image: url('cal-background.gif');
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+         }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+         h1 {
+            color: #333;
+        }
+
+         label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        input {
+            padding: 5px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result-box {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 400px;
+            border-radius: 5px;
+        }
+
+        p {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .love-gif {
+            width: 100px;
+            height: auto;
+            margin-top: 0px;
+        }
+
+        .left-gif {
+            width: 100px;
+            height: auto;
+            margin-left: 10px;
+        }
+
+        .right-gif {
+            width: 100px;
+            height: auto;
+            margin-left: 10px;
+        }
+
+        .history ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        .history ul li {
+            color: #FF5733; 
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <img src="love.gif" alt="Love Gif" class="love-gif">
+    <img src="cal-love.gif" alt="Love Gif" class="left-gif">
+    <img src="tkthao219-peach.gif" alt="Love Gif" class="right-gif">
+    <div class="container">
+        <h1>Love Calculator</h1>
+        <label for="name1">Enter Name 1:</label>
+        <input type="text" id="name1" placeholder="Name 1">
+        <br>
+        <label for="name2">Enter Name 2:</label>
+        <input type="text" id="name2" placeholder="Name 2">
+        <br>
+        <button onclick="calculateLove()">Calculate</button>
+        <button onclick="showHistory()">Show History</button>
+        <button onclick="clearHistory()">Clear History</button>
+        <div class="result-box">
+            <p id="result"></p>
+        </div>
+    </div>
+    
+    <div class="history">
+        <h2 style="color: #0056b3;">History</h2>
+        <ul id="nameHistory"></ul>
+    </div>
+
+    <script>
+        const nameHistory = JSON.parse(localStorage.getItem("nameHistory")) || [];
+
+        function calculateLove() {
+            const name1 = document.getElementById("name1").value.trim();
+            const name2 = document.getElementById("name2").value.trim();
+
+            if (name1 === '' || name2 === '') {
+                alert("Please input both names.");
+                return;
+            }
+
+            const compatibilityScore = Math.floor(Math.random() * 101);
+
+            let message = `The love compatibility between ${name1} and ${name2} is ${compatibilityScore}%.`;
+
+            if (compatibilityScore >= 70) {
+                message += "You are compatible🙈❤️";
+            } else if (compatibilityScore >= 50) {
+                message += " You guys are somehow compatible😊";
+            } else {
+                message += "No try am because your eyes go see shege😂";
+            }
+
+            document.getElementById("result").innerText = message;
+
+            const historyEntry = `${name1} & ${name2} - ${compatibilityScore}%`;
+            nameHistory.push(historyEntry);
+            localStorage.setItem("nameHistory", JSON.stringify(nameHistory));
+
+            document.getElementById("name1").value = '';
+            document.getElementById("name2").value = '';
+        }
+
+        function showHistory() {
+            const nameHistoryList = document.getElementById("nameHistory");
+            nameHistoryList.innerHTML = "";
+            nameHistory.forEach((entry) => {
+                const listItem = document.createElement("li");
+                listItem.textContent = entry;
+                nameHistoryList.appendChild(listItem);
+            });
+        }
+
+        function clearHistory() {
+            localStorage.removeItem("nameHistory");
+            nameHistory.length = 0;
+            const nameHistoryList = document.getElementById("nameHistory");
+            nameHistoryList.innerHTML = "";
+        }
+    </script>
+</body>
+</html>
